@@ -47,7 +47,7 @@ class SinglyLinkedList {
             current.next = null;
             this.tail = current;
             this.length --;
-            return temp;
+            return temp.val;
         }
     }
 
@@ -62,8 +62,8 @@ class SinglyLinkedList {
             this.length --;
             if (this.length === 0) {
                 this.tail = null;
-                return temp.val;
             }
+            return temp;
         }
     }
 
@@ -87,6 +87,7 @@ class SinglyLinkedList {
         // special cases
         if (index < 0 || index >= this.length) return undefined;
         if (index === 0) return this.head;
+
         // traverse list
         let current = this.head
         for(let count=0; count<index; count++) {
@@ -103,15 +104,47 @@ class SinglyLinkedList {
     }
 
     insert(index, val) {
+        // special cases
         if (index < 0 || index > this.length) return false;
         if (index === 0) return !!this.unshift(val); // !! ensures true is returned
         if (index === this.length) return !!this.push(val); // !! ensures true is returned
+
         let previousNode = this.get(index - 1);
         let newNode = new Node(val);
         newNode.next = previousNode.next;
         previousNode.next = newNode;
         this.length ++;
         return true;
+    }
+
+    remove(index) {
+        // special cases
+        if (index < 0 || index >= this.length) return undefined;
+        if (index === 0) return this.shift(index).val; 
+        if (index === this.length - 1) return this.pop().val; 
+
+        let previousNode = this.get(index - 1);
+        let removedNode = previousNode.next;
+        previousNode.next = removedNode.next;
+        this.length --;
+        return removedNode;
+    }
+
+    reverse() {
+        let oldTail = this.tail;
+        this.tail = this.head;
+        let currentNode = this.tail;
+        let nextNode = currentNode.next;
+        while (nextNode != oldTail) {
+            let temp = nextNode.next;
+            nextNode.next = currentNode;
+            currentNode = nextNode;
+            nextNode = temp;
+        }
+        nextNode.next = currentNode;
+        this.head = nextNode;
+        this.tail.next = null;
+        return this;
     }
 }
 
