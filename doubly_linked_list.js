@@ -109,6 +109,60 @@ class DoublyLinkedList {
             return false;
         }
     }
+
+    insert(index, val) {
+        // check index within range of linked list
+        if (index < 0 || index > this.length) return false;
+
+        // push & unshift scenarios
+        if (index === 0) return !!this.unshift(val); // !! turns to bool
+        if (index === this.length) return !!this.push(val); // !! turns to bool
+
+        // get node currently in position for insert
+        let currentNode = this.get(index);
+            
+        // create mew node, make insertion and amend links
+        let insertedNode = new Node(val)
+        insertedNode.next = currentNode;
+        insertedNode.previous = currentNode.previous;
+        currentNode.previous.next = insertedNode;
+        currentNode.previous = insertedNode;
+        this.length ++;
+        return true;
+    }
+    
+
+    remove(index) {
+        // check index within range of linked list
+        if (index < 0 || index > this.length) return null;
+        // edge cases
+        if (index === 0) return this.shift();
+        if (index === this.length - 1) return this.pop();
+        // get node to remove and re-set all links
+        let removedNode = this.get(index)
+        removedNode.previous.next = removedNode.next;
+        removedNode.next.previous = removedNode.previous;
+        removedNode.next = null;
+        removedNode.previous = null;
+        this.length --;
+        return removedNode;
+    }
+
+    reverse() {
+        let current = this.head;
+        // swap each nodes previous & next's
+        while (current) {
+            let next = current.next;
+            current.next = current.previous;
+            current.previous = next;
+            current = current.previous;
+        }
+        // swap head & tail
+        let oldHead = this.head;
+        this.head = this.tail;
+        this.tail = oldHead;
+        return true;
+    }
 }
 
 let myList = new DoublyLinkedList()
