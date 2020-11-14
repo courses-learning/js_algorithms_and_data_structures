@@ -132,21 +132,53 @@ class bst {
     }
 
     // breadth first search
-    bfSearch(val) {
+    BFSearch(val) {
         let searchQueue = new Queue;
-        let values = [];
+        let visited = [];
         let current;
         searchQueue.enQueue(this.root);
         while (searchQueue.size > 0) {
             current = searchQueue.deQueue();
             if (current.left) searchQueue.enQueue(current.left);
             if (current.right) searchQueue.enQueue(current.right);
-            values.push(current.val);
+            visited.push(current.val);
         }
-        return values;
+        return visited;
+    }
+
+    // depth first (pre-order) search
+    DFSPreOrder(val) {
+        let visited = [];
+        this.DFSHelper(this.root, visited, 'preorder');
+        return visited;
+    }
+
+    // depth first (post-order) search
+    DFSPostOrder(val) {
+        let visited = [];
+        this.DFSHelper(this.root, visited, 'postorder');
+        return visited;
+    }
+
+    DFSInOrder(val) {
+        let visited = [];
+        this.DFSHelper(this.root, visited, 'inorder');
+        return visited;
+    }
+
+    // depth first search recursive helper function to add against list of nodes visited
+    DFSHelper(node, visited, search) {
+        if (search === 'preorder') visited.push(node.val);
+        if (node.left) this.DFSHelper(node.left, visited, search);
+        if (search === 'inorder') visited.push(node.val);
+        if (node.right) this.DFSHelper(node.right, visited, search);
+        if (search === 'postorder') visited.push(node.val);
+        return visited;
     }
 }
 
+
+// build a tree
 let tree = new bst();
 tree.insert(10);
 tree.insert(5);
@@ -156,5 +188,10 @@ tree.insert(9);
 tree.insert(1);
 tree.insert(20);
 tree.insert(17);
-console.log(tree.bfSearch(20))
+
+// execute each search
+console.log(`Breadth First Search: ${tree.BFSearch(20)}`);
+console.log(`Depth First(preOrder): ${tree.DFSPreOrder(20)}`);
+console.log(`Depth First(postOrder): ${tree.DFSPostOrder(20)}`);
+console.log(`Depth First(inOrder): ${tree.DFSInOrder(20)}`);
 
