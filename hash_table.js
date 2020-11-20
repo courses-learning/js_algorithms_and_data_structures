@@ -31,22 +31,30 @@ class HashTable {
         return undefined;
     }
 
+    keys() {
+        return this.flatten(0);
+    }
+
+    values() {
+        return this.flatten(1);
+    }
+
+    flatten(flag) {
+        // filter out blank entries in array
+        let filtered = this.keyMap.filter(entry => entry !== undefined);
+        // merge/flatten the filtered array
+        let merged = [].concat.apply([], filtered);
+        // get unique values via set and return as array - for flag 0=keys, 1=values
+        return Array.from(new Set(merged.map(x => x[flag])));
+    }
 
 }
 
-function flatten(items, keyValue) {
-    let flatSet = new Set();
-    
-    items.forEach(item => {
-      if (Array.isArray(item)) {
-        flatSet.push(...flatten(item));
-      } else {
-        flatSet.push(item);
-      }
-    });
-  
-    return flatSet;
-  }
 
 
 let dict = new HashTable;
+
+dict.set('snowy', 'cat')
+dict.set('jake', 'dog')
+dict.set('beth', 'dog')
+dict.set('beth', 'lizard')
