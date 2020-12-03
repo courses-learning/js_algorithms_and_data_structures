@@ -60,6 +60,55 @@ class UndirectedGraph {
         DFS(startNode);
         return result;
     }
+
+    DFSIterative(startNode) {
+        let stack = [startNode];
+        let result = [];
+        let visited = {};
+        let vertex;
+
+        while (stack.length > 0) {
+            // pop next vertec from stack
+            vertex = stack.pop();
+            // if vertex hasn't been visited
+            if (!visited[vertex]) {
+                // set to visited
+                visited[vertex] = true;
+                // push onto results
+                result.push(vertex);
+                // push all neighbours onto stack
+                for (let item of this.adjacencyList[vertex]) {
+                    stack.push(item);
+                }
+            }
+        }
+        return result;
+    }
+
+    BFSIterative(startNode) {
+        // code is exactly the same as DFS but use queue instead of stack
+        let queue = [startNode];
+        let result = [];
+        let visited = {};
+        let vertex;
+
+        while (queue.length > 0) {
+            // key different line to DFS - uses shift instead of pop
+            vertex = queue.shift();
+            // if vertex hasn't been visited
+            if (!visited[vertex]) {
+                // set to visited
+                visited[vertex] = true;
+                // push onto results
+                result.push(vertex);
+                // push all neighbours onto stack
+                for (let item of this.adjacencyList[vertex]) {
+                    queue.push(item);
+                }
+            }
+        }
+        return result;
+    }
 }
 
 let g = new UndirectedGraph;
